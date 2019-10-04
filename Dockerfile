@@ -1,15 +1,12 @@
 FROM centos
 
 RUN yum update -y 
-RUN yum install epel-release -y 
-RUN yum update -y 
 RUN yum -y install httpd httpd-tools 
 
 #Php Setup
-RUN yum -y install epel-release yum-utils;
-RUN yum -y install php php-cli php-fpm php-zip php-devel php-gd php-mbstring php-curl php-xml php-pear php-bcmath php-json;
+RUN yum -y install php;
 
-RUN echo '<?php echo "Hello Getir! I am running on: "; echo gethostname(); ?>' > /var/www/html/index.php
+RUN echo 'Hello Getir' > /var/www/html/index.html
 
 EXPOSE  80
 CMD     ["/usr/sbin/httpd","-D","FOREGROUND"]
