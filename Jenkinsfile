@@ -17,12 +17,12 @@ pipeline {
     }
     stage('DeployStage') {
       steps {
-        sh "./deploy.sh"
+        sh "bash ./deploy.sh"
       }
     }
     stage('TestStage') {
       steps {
-        sh "./test.sh"
+        sh "bash ./test.sh"
       }
     }
   }
