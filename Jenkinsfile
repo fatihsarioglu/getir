@@ -12,17 +12,17 @@ pipeline {
   stages {
     stage('BuildStage') {
       steps {
-        sh "./cicd/build.sh -b ${env.BUILD_ID} -n ${params.REPONAME} -e ${params.ECR} -r ${params.REGION}"
+        sh "./build.sh -b ${env.BUILD_ID} -n ${params.REPONAME} -e ${params.ECR} -r ${params.REGION}"
       }
     }
     stage('DeployStage') {
       steps {
-        sh "./cicd/deploy.sh"
+        sh "./deploy.sh"
       }
     }
     stage('TestStage') {
       steps {
-        sh "./cicd/test.sh"
+        sh "./test.sh"
       }
     }
   }
