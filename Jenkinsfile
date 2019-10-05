@@ -21,8 +21,9 @@ pipeline {
         stage('Deploy to ECS') {
 
                 steps {
+        sh "./deploy.sh"
+    }
                       
                     } 
-            }     
-     }
+           } 
 }
