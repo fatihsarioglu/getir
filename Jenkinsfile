@@ -1,29 +1,29 @@
 #!/usr/bin/env groovy
 
 pipeline {
-   agent {
-    label 'master'
+  agent any
+  parameters {
+    string(name: 'REPONAME', defaultValue: 'getir/jobapp', description: 'AWS ECR Repository Name')
+    string(name: 'ECR', defaultValue: '791943130538.dkr.ecr.eu-central-1.amazonaws.com/getir/jobapp:latest', description: 'AWS ECR Registry URI')
+    string(name: 'REGION', defaultValue: 'eu-central-1', description: 'AWS Region code')
+    string(name: 'CLUSTER', defaultValue: 'GetirCluster', description: 'AWS ECS Cluster name')
+    string(name: 'TASK', defaultValue: 'GetirTask', description: 'AWS ECS Task name')
+  }
+  stages {
+    stage('BuildStage') {
+      steps {
+        sh "./cicd/build.sh -b ${env.BUILD_ID} -n ${params.REPONAME} -e ${params.ECR} -r ${params.REGION}"
+      }
     }
-    options {
-        timestamps()
-        retry(1)
-        buildDiscarder(logRotator(numToKeepStr: '5'))
-        timeout(time: 45, unit: 'SECONDS')
-        disableConcurrentBuilds()
+    stage('DeployStage') {
+      steps {
+        sh "./cicd/deploy.sh"
+      }
     }
-
-    environment {
-        AWS_ACCESS_KEY_ID= credentials('getir-aws-secret-key-id')
-        AWS_SECRET_ACCESS_KEY= credentials('getir-aws-secret-access-key')
-        AWS_DEFAULT_REGION='eu-central-1'    
+    stage('TestStage') {
+      steps {
+        sh "./cicd/test.sh"
+      }
     }
-    stages {
-        stage('Deploy to ECS') {
-
-                steps {
-        sh "./deploy.sh"
-    }
-                      
-                    } 
-           } 
+  }
 }
