@@ -12,7 +12,7 @@ pipeline {
   stages {
     stage('BuildStage') {
       steps {
-        sh "./build.sh -b ${env.BUILD_ID} -n ${params.REPONAME} -e ${params.ECR} -r ${params.REGION}"
+        sh "bash ./build.sh -b ${env.BUILD_ID} -n ${params.REPONAME} -e ${params.ECR} -r ${params.REGION}"
       }
     }
     stage('DeployStage') {
