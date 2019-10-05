@@ -15,7 +15,7 @@ pipeline {
     environment {
         AWS_ACCESS_KEY_ID= credentials('getir-aws-secret-key-id')
         AWS_SECRET_ACCESS_KEY= credentials('getir-aws-secret-access-key')
-        AWS_DEFAULT_REGION='eu-west-2'    
+        AWS_DEFAULT_REGION='eu-central-1'    
     }
     stages {
         stage('Deploy to ECS') {
