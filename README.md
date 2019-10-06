@@ -19,7 +19,7 @@ Go to https://labs.play-with-docker.com and run the command:
 
 * **Testing ECR**  
   
-Go to ECR URL
+Go to ECR URI 791943130538.dkr.ecr.eu-central-1.amazonaws.com/getir/jobapp
 
 
 
