@@ -9,7 +9,6 @@ set -f
 declare REPONAME
 declare ECR
 declare REGION
-declare BUILD_NUMBER
 declare -r -i SUCCESS=0
 declare -r -i NO_ARGS=85
 declare -r -i BAD_ARGS=86
@@ -26,7 +25,6 @@ function usage() {
   printf " -n\tset ecr repository name\n"
   printf " -e\tset ecr repository uri\n"
   printf " -r\tset aws region\n"
-  printf " -b\tset build number\n "
 }
  
 function no_args() {
@@ -48,14 +46,13 @@ function missing_args() {
 }
  
 ## check script arguments
-while getopts "hn:e:r:b:" OPTION; do
+while getopts "hn:e:r:" OPTION; do
   case "$OPTION" in
     h) usage
        exit "$SUCCESS";;
     n) REPONAME="$OPTARG";;
     e) ECR="$OPTARG";;
     r) REGION="$OPTARG";;
-    b) BUILD_NUMBER="$OPTARG";;
     *) bad_args;;
   esac
 done
@@ -76,10 +73,7 @@ if [ -z "$REGION" ]; then
   missing_args '-r'
 fi
  
-if [ -z "$BUILD_NUMBER" ]; then
-  missing_args '-b'
-fi
- 
+
 ## run main function
 function main() {
   local LAST_ID
@@ -91,16 +85,16 @@ function main() {
   fi
  
   # build new image
-  docker build -t "$REPONAME:$BUILD_NUMBER" --pull=true .
+  docker build -t "$REPONAME:" --pull=true .
  
   # tag image for AWS ECR
-  docker tag "$REPONAME:$BUILD_NUMBER" "$ECR":"$BUILD_NUMBER"
+  docker tag "$REPONAME:" "$ECR":
  
   # basic auth into ECR
   $(aws ecr get-login --no-include-email --region "$REGION")
  
   # push image to AWS ECR
-  docker push "$ECR":"$BUILD_NUMBER"
+  docker push "$ECR":
 }
  
 main
