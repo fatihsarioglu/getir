@@ -17,7 +17,7 @@ pipeline {
     }
     stage('DeployStage') {
       steps {
-        sh "bash ./deploy.sh"
+        sh "bash ./deploy.sh -b ${env.BUILD_ID} -e ${params.ECR} -c ${params.CLUSTER} -t ${params.TASK}"
       }
     }
     stage('TestStage') {
